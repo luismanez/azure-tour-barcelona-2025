@@ -27,13 +27,16 @@ public class RagAskShould : IClassFixture<EvaluationFixture>
         var datasetFullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data/evaluation-dataset.json");
         var jsonContent = File.ReadAllText(datasetFullPath);
         var data = JsonSerializer.Deserialize<IEnumerable<EvaluationItem>>(jsonContent);
-        return data!.Select(item => new object[] { item });
+
+        return data!.Select(d => new object[] { d.Id, d.Query, d.GroundTruth });
     }
 
     [Theory]
     [MemberData(nameof(GetQuestionsToEvaluate))]
-    public async Task EvaluateQuestion(EvaluationItem question)
+    public async Task EvaluateQuestion(string id, string query, string groundTruth)
     {
+        var question = new EvaluationItem(id, query, groundTruth);
+
         question.Query.Should().NotBeNull();
 
         // This SHOULD be a call to YOUR AI Chat API!

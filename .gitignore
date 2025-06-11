@@ -404,3 +404,4 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+/src/evaluation/Abyx.AI.EvaluationTests/testsettings.json
